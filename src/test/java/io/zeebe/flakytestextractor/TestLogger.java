@@ -1,4 +1,4 @@
-package com.github.pihme.flakytestextractor;
+package io.zeebe.flakytestextractor;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

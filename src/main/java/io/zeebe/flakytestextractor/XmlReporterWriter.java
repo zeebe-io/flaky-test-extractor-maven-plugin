@@ -1,4 +1,4 @@
-package com.github.pihme.flakytestextractor;
+package io.zeebe.flakytestextractor;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.maven.plugin.surefire.report.FileReporterUtils.stripIllegalFilenameChars;

@@ -1,4 +1,4 @@
-package com.github.pihme.flakytestextractor;
+package io.zeebe.flakytestextractor;
 
 import static java.util.Collections.sort;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,6 +24,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.xml.sax.SAXException;
+
+import io.zeebe.flakytestextractor.ExtendedReportTestCase;
+import io.zeebe.flakytestextractor.ExtendedReportTestSuite;
+import io.zeebe.flakytestextractor.ExtendedTestSuiteXMLParser;
+import io.zeebe.flakytestextractor.FlakyTestExtractorPlugin;
 
 public class FlakyTestExtractorPluginTest {
 

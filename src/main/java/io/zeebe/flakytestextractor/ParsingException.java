@@ -1,4 +1,4 @@
-package com.github.pihme.flakytestextractor;
+package io.zeebe.flakytestextractor;
 
 public class ParsingException extends Exception {
 

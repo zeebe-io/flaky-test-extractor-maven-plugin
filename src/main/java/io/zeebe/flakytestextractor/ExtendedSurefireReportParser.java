@@ -1,4 +1,4 @@
-package com.github.pihme.flakytestextractor;
+package io.zeebe.flakytestextractor;
 
 import static org.apache.maven.surefire.shared.utils.StringUtils.split;
 

@@ -6,9 +6,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.github.pihme.flaky-test-extractor-maven-plugin</groupId>
+	<groupId>io.zeebe</groupId>
 	<artifactId>flaky-test-extractor-maven-plugin</artifactId>
-	<version>1.0.0</version>
+	<version>2.0.0-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>flaky-test-extractor Maven Plugin</name>
@@ -17,10 +17,17 @@
 		<maven>${maven.version}</maven>
 	</prerequisites>
 
+	<parent>
+		<groupId>org.camunda</groupId>
+		<artifactId>camunda-release-parent</artifactId>
+		<version>3.7</version>
+		<!-- do not remove empty tag - http://jira.codehaus.org/browse/MNG-4687 -->
+		<relativePath />
+	</parent>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<version.java>8</version.java>
 		<maven.version>3.0</maven.version>
 		<surefire.version>3.0.0-M5</surefire.version>
 	</properties>
@@ -101,8 +108,79 @@
 						<dependencyConvergence />
 					</rules>
 				</configuration>
-
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>zeebe</id>
+			<name>Zeebe Repository</name>
+			<url>https://app.camunda.com/nexus/content/repositories/zeebe-io/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>zeebe-snapshots</id>
+			<name>Zeebe Snapshot Repository</name>
+			<url>https://app.camunda.com/nexus/content/repositories/zeebe-io-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<properties>
+				<plugin.version.gpg>1.6</plugin.version.gpg>
+				<gpg.passphrase>${env.GPG_PASS}</gpg.passphrase>
+				<resume>false</resume>
+				<tag>${env.RELEASE_VERSION}</tag>
+				<releaseVersion>${env.RELEASE_VERSION}</releaseVersion>
+				<developmentVersion>${env.DEVELOPMENT_VERSION}</developmentVersion>
+				<arguments>-DskipTests</arguments>
+			</properties>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-gpg-plugin</artifactId>
+							<configuration>
+								<gpgArguments>
+									<arg>--pinentry-mode</arg>
+									<arg>loopback</arg>
+								</gpgArguments>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
+
+	<scm>
+		<url>https://github.com/zeebe-io/flaky-test-extractor-maven-plugin</url>
+		<connection>scm:git:git@github.com:zeebe-io/flaky-test-extractor-maven-plugin.git</connection>
+		<developerConnection>scm:git:git@github.com:zeebe-io/flaky-test-extractor-maven-plugin.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
 </project>

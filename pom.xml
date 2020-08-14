@@ -30,6 +30,11 @@
 		<version.java>8</version.java>
 		<maven.version>3.0</maven.version>
 		<surefire.version>3.0.0-M5</surefire.version>
+		<nexus.snapshot.repository>
+			https://app.camunda.com/nexus/content/repositories/zeebe-io-snapshots/
+		</nexus.snapshot.repository>
+		<nexus.release.repository>https://app.camunda.com/nexus/content/repositories/zeebe-io/
+		</nexus.release.repository>
 	</properties>
 
 	<dependencies>

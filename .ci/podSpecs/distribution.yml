@@ -24,8 +24,6 @@ spec:
         - name: JAVA_TOOL_OPTIONS
           value: |
             -XX:+UseContainerSupport
-        - name: DOCKER_HOST
-          value: tcp://localhost:2375
         - name: ZEEBE_CI_SHARED_DATA
           value: /home/shared
       resources:
@@ -41,20 +39,4 @@ spec:
         - name: shared-data
           mountPath: /home/shared
           mountPropagation: Bidirectional
-    - name: docker
-      image: docker:18.09.4-dind
-      args: ["--storage-driver=overlay2"]
-      securityContext:
-        privileged: true
-      tty: true
-      resources:
-        limits:
-          cpu: 2
-          memory: 4Gi
-        requests:
-          cpu: 2
-          memory: 4Gi
-      volumeMounts:
-        - name: shared-data
-          mountPath: /home/shared
-          mountPropagation: Bidirectional
+

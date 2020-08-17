@@ -23,7 +23,6 @@ pipeline {
 
   environment {
     NEXUS = credentials("camunda-nexus")
-    DOCKER_HUB = credentials("camunda-dockerhub")
   }
 
   parameters {
@@ -39,9 +38,6 @@ pipeline {
           configFileProvider([configFile(fileId: 'maven-nexus-settings-zeebe', variable: 'MAVEN_SETTINGS_XML')]) {
             sh '.ci/scripts/distribution/prepare.sh'
           }
-        }
-        container('docker') {
-            sh 'docker login --username ${DOCKER_HUB_USR} --password ${DOCKER_HUB_PSW}'
         }
       }
     }
@@ -85,7 +81,6 @@ pipeline {
         GITHUB_TOKEN = credentials('camunda-jenkins-github')
         RELEASE_VERSION = "${params.RELEASE_VERSION}"
         DEVELOPMENT_VERSION = "${params.DEVELOPMENT_VERSION}"
-        DOCKER_HUB = credentials("camunda-dockerhub")
       }
 
       steps {
@@ -99,13 +94,6 @@ pipeline {
                 sh 'mkdir ~/.ssh/ && ssh-keyscan github.com >> ~/.ssh/known_hosts'
                 sh 'mvn -B -s $MAVEN_SETTINGS_XML -DskipTests source:jar javadoc:jar release:prepare release:perform -Prelease'
                 sh '.ci/scripts/github-release.sh'
-             }
-          }
-        }
-        container('maven') {
-          configFileProvider([configFile(fileId: 'maven-nexus-settings-zeebe', variable: 'MAVEN_SETTINGS_XML')]) {
-              sshagent(['camunda-jenkins-github-ssh']) {
-                  sh 'mvn jib:build -Djib.to.tags=latest,${RELEASE_VERSION} -Djib.to.auth.username=${DOCKER_HUB_USR} -Djib.to.auth.password=${DOCKER_HUB_PSW}'
              }
           }
         }

@@ -34,6 +34,17 @@ pipeline {
   stages {
     stage('Prepare') {
       steps {
+         script {
+            commit_summary = sh([returnStdout: true, script: 'git show -s --format=%s']).trim()
+            displayNameFull = "#" + BUILD_NUMBER + ': ' + commit_summary
+
+            if (displayNameFull.length() <= 45) {
+              currentBuild.displayName = displayNameFull
+            } else {
+              displayStringHardTruncate = displayNameFull.take(45)
+              currentBuild.displayName = displayStringHardTruncate.take(displayStringHardTruncate.lastIndexOf(" "))
+            }
+        }
         container('maven') {
           configFileProvider([configFile(fileId: 'maven-nexus-settings-zeebe', variable: 'MAVEN_SETTINGS_XML')]) {
             sh '.ci/scripts/distribution/prepare.sh'
@@ -55,7 +66,18 @@ pipeline {
       post {
         always {
             junit testResults: "target/surefire-reports/TEST-*.xml", keepLongStdio: true
+            jacoco(
+                  execPattern: '**/*.exec',
+                  classPattern: '**/target/classes',
+                  sourcePattern: '**/src/main/java',
+                  runAlways: true
+            )
+            zip zipFile: 'test-coverage-reports.zip', archive: true, glob: "**/target/site/jacoco/**"
         }
+        failure {
+            zip zipFile: 'test-reports.zip', archive: true, glob: "**/*/surefire-reports/**"
+            archive "**/hs_err_*.log"
+        }  
       }
     }
 

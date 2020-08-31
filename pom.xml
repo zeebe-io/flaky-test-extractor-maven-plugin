@@ -6,7 +6,7 @@
 
 	<groupId>io.zeebe</groupId>
 	<artifactId>flaky-test-extractor-maven-plugin</artifactId>
-	<version>2.0.1-SNAPSHOT</version>
+	<version>2.0.1</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>flaky-test-extractor Maven Plugin</name>
@@ -212,6 +212,6 @@
 		<url>https://github.com/zeebe-io/flaky-test-extractor-maven-plugin</url>
 		<connection>scm:git:git@github.com:zeebe-io/flaky-test-extractor-maven-plugin.git</connection>
 		<developerConnection>scm:git:git@github.com:zeebe-io/flaky-test-extractor-maven-plugin.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>2.0.1</tag>
 	</scm>
 </project>

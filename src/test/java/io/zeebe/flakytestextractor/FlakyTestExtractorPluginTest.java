@@ -10,29 +10,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.io.FileUtils;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.xml.sax.SAXException;
 
-import io.zeebe.flakytestextractor.ExtendedReportTestCase;
-import io.zeebe.flakytestextractor.ExtendedReportTestSuite;
-import io.zeebe.flakytestextractor.ExtendedTestSuiteXMLParser;
-import io.zeebe.flakytestextractor.FlakyTestExtractorPlugin;
-
 public class FlakyTestExtractorPluginTest {
-
-	private static final Logger LOGGER = Logger.getLogger("com.github.pihme.flakytestextractor");
 
 	private final ExtendedTestSuiteXMLParser PARSER = new ExtendedTestSuiteXMLParser(new TestLogger());
 
@@ -48,14 +37,7 @@ public class FlakyTestExtractorPluginTest {
 
 	@Before
 	public void setUpFiles() throws IOException {
-		for (String resource : RESSOURCES) {
-			URL url = ClassLoader.getSystemResource(resource);
-			String urlString = url.toExternalForm();
-			String targetName = urlString.substring(urlString.lastIndexOf("/"));
-			File destination = new File(tempFolder.getRoot(), targetName);
-			FileUtils.copyURLToFile(url, destination);
-			LOGGER.info("Copied " + url + " to " + destination.getAbsolutePath());
-		}
+		TestUtil.copyClassPatHResourcesToFolder(RESSOURCES, tempFolder.getRoot());
 	}
 
 	@Test

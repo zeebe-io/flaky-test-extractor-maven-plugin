@@ -7,7 +7,7 @@ import org.apache.maven.plugin.logging.Log;
 
 public class TestLogger implements Log {
 
-	private static final Logger logger = Logger.getLogger("com.github.pihme.flakytestextractor");
+	private static final Logger logger = Logger.getLogger("io.zeebe.flakytestextractor");
 
 	@Override
 	public boolean isDebugEnabled() {

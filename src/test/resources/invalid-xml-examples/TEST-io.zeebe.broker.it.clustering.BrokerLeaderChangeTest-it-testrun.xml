@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="io.zeebe.broker.it.clustering.BrokerLeaderChangeTest(it-testrun)" time="33.74" tests="1" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
+    <property name="java.specification.version" value="11"/>
+    <property name="sun.cpu.isalist" value=""/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.version" value="55.0"/>
+  </properties>
+  <testcase name="shouldBeAbleToBecomeLeaderAgain" classname="io.zeebe.broker.it.clustering.BrokerLeaderChangeTest(it-testrun)" time="28.364"/>
+  <testcase name="shouldChangeLeaderAfterLeaderDies" classname="io.zeebe.broker.it.clustering.BrokerLeaderChangeTest(it-testrun)" time="27.225"/>
+  <testcase name="shouldBecomeFollowerAfterRestartLeaderChange" classname="io.zeebe.broker.it.clustering.BrokerLeaderChangeTest(it-testrun)" time="33.738">
+    <flakyError message="Lambda expression in io.zeebe.broker.it.clustering.ClusteringRule: expected the predicate to return &lt;true&gt; but it returned &lt;false&gt; for input of &lt;[BrokerInfoImpl{nodeId=0, host=&apos;0.0.0.0&apos;, port=28812, version=0.25.0-SNAPSHOT, partitions=[PartitionInfoImpl{partitionId=1, role=FOLLOWER}]}, BrokerInfoImpl{nodeId=2, host=&apos;0.0.0.0&apos;, port=28822, version=0.25.0-SNAPSHOT, partitions=[PartitionInfoImpl{partitionId=1, role=FOLLOWER}]}]&gt; within 10 seconds." type="org.awaitility.core.ConditionTimeoutException">
+      <stackTrace><![CDATA[org.awaitility.core.ConditionTimeoutException: Lambda expression in io.zeebe.broker.it.clustering.ClusteringRule: expected the predicate to return <true> but it returned <false> for input of <[BrokerInfoImpl{nodeId=0, host='0.0.0.0', port=28812, version=0.25.0-SNAPSHOT, partitions=[PartitionInfoImpl{partitionId=1, role=FOLLOWER}]}, BrokerInfoImpl{nodeId=2, host='0.0.0.0', port=28822, version=0.25.0-SNAPSHOT, partitions=[PartitionInfoImpl{partitionId=1, role=FOLLOWER}]}]> within 10 seconds.
+	at org.awaitility.core.ConditionAwaiter.await(ConditionAwaiter.java:165)
+	at org.awaitility.core.AbstractHamcrestCondition.await(AbstractHamcrestCondition.java:86)
+	at org.awaitility.core.ConditionFactory.until(ConditionFactory.java:895)
+	at org.awaitility.core.ConditionFactory.until(ConditionFactory.java:601)
+	at org.awaitility.core.ConditionFactory.until(ConditionFactory.java:618)
+	at io.zeebe.broker.it.clustering.ClusteringRule.waitForTopology(ClusteringRule.java:619)
+	at io.zeebe.broker.it.clustering.ClusteringRule.waitForNewLeaderOfPartitions(ClusteringRule.java:600)
+	at io.zeebe.broker.it.clustering.ClusteringRule.stopBrokerAndAwaitNewLeader(ClusteringRule.java:574)
+	at io.zeebe.broker.it.clustering.BrokerLeaderChangeTest.shouldBecomeFollowerAfterRestartLeaderChange(BrokerLeaderChangeTest.java:53)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.TestWatcher$1.evaluate(TestWatcher.java:61)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:204)
+	at org.awaitility.core.Uninterruptibles.getUninterruptibly(Uninterruptibles.java:101)
+	at org.awaitility.core.Uninterruptibles.getUninterruptibly(Uninterruptibles.java:81)
+	at org.awaitility.core.ConditionAwaiter.await(ConditionAwaiter.java:101)
+	... 25 more
+]]></stackTrace>
+      <system-out><![CDATA[

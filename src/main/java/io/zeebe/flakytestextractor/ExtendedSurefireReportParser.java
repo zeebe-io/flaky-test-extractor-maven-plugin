@@ -20,7 +20,8 @@ import org.xml.sax.SAXException;
 
 /**
  * Based on
- * {@code org.apache.maven.plugins.surefire.report.SurefireReportParser} (licensed under http://www.apache.org/licenses/LICENSE-2.0).
+ * {@code org.apache.maven.plugins.surefire.report.SurefireReportParser}
+ * (licensed under http://www.apache.org/licenses/LICENSE-2.0).
  * 
  * This implementation uses the extended data objects to capture more
  * information on flaky tests
@@ -53,15 +54,16 @@ public class ExtendedSurefireReportParser {
 		final Map<File, List<ExtendedReportTestSuite>> result = new HashMap<>();
 
 		final ExtendedTestSuiteXMLParser parser = new ExtendedTestSuiteXMLParser(logger);
-		for (File aXmlReportFileList : xmlReportFiles) {
+		for (File xmlReportFile : xmlReportFiles) {
 			try {
-				result.put(aXmlReportFileList, parser.parse(aXmlReportFileList.getAbsolutePath()));
+				result.put(xmlReportFile, parser.parse(xmlReportFile.getAbsolutePath()));
 			} catch (ParserConfigurationException e) {
 				throw new ParsingException("Error setting up parser for JUnit XML report", e);
 			} catch (SAXException e) {
-				throw new ParsingException("Error parsing JUnit XML report " + aXmlReportFileList, e);
+				logger.info("Skipping " + xmlReportFile.getName() + " because of parsing exception:"
+						+ e.getLocalizedMessage());
 			} catch (IOException e) {
-				throw new ParsingException("Error reading JUnit XML report " + aXmlReportFileList, e);
+				throw new ParsingException("Error reading JUnit XML report " + xmlReportFile, e);
 			}
 		}
 

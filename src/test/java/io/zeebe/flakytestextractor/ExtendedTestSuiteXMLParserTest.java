@@ -13,10 +13,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import io.zeebe.flakytestextractor.ExtendedReportTestCase;
-import io.zeebe.flakytestextractor.ExtendedReportTestSuite;
-import io.zeebe.flakytestextractor.ExtendedTestSuiteXMLParser;
-
 public class ExtendedTestSuiteXMLParserTest {
 	private static final ClassLoader CLASS_LOADER = Thread.currentThread().getContextClassLoader();
 

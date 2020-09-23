@@ -31,7 +31,7 @@
 		<nexus.snapshot.repository>https://app.camunda.com/nexus/content/repositories/zeebe-io-snapshots/</nexus.snapshot.repository>
 		<nexus.release.repository>https://app.camunda.com/nexus/content/repositories/zeebe-io/</nexus.release.repository>
 		
-		<plugin.version.jacoco>0.8.5</plugin.version.jacoco>
+		<plugin.version.jacoco>0.8.6</plugin.version.jacoco>
 	</properties>
 
 	<dependencies>

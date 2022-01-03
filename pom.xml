@@ -16,11 +16,9 @@
     </prerequisites>
 
     <parent>
-        <groupId>org.camunda</groupId>
-        <artifactId>camunda-release-parent</artifactId>
-        <version>3.9.1</version>
-        <!-- do not remove empty tag - http://jira.codehaus.org/browse/MNG-4687 -->
-        <relativePath />
+        <groupId>org.camunda.community</groupId>
+        <artifactId>community-hub-release-parent</artifactId>
+        <version>1.2.2</version>
     </parent>
 
     <properties>
@@ -222,32 +220,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>zeebe</id>
-            <name>Zeebe Repository</name>
-            <url>https://app.camunda.com/nexus/content/repositories/zeebe-io/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-
-        <repository>
-            <id>zeebe-snapshots</id>
-            <name>Zeebe Snapshot Repository</name>
-            <url>https://app.camunda.com/nexus/content/repositories/zeebe-io-snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <profiles>
         <profile>

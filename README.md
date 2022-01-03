@@ -8,7 +8,7 @@ Flaky tests are tricky to diagnose and fix. Surefire has an option to rerun fail
 This plugin scans the XML file for flaky tests results and then generates additional XML files just for the flaky tests. In these new XML files the flaky tests will be reported as test failures. Thus they can be picked up by downstream tools.
 
 ## What does it do exactly?
-* It scans a folder for Ssurefire test run XML files
+* It scans a folder for Surefire test run XML files
 * If it finds flaky test results in a file `TEST-com.example.Test.xml`
 * It creates a new file `TEST-com.example.Test-FLAKY.xml`
 * This file will contain only the flaky tests and flaky errors of the original file

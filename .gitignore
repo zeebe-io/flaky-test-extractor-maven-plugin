@@ -13,3 +13,5 @@ buildNumber.properties
 .project
 .settings/
 
+/.idea/
+/flaky-test-extractor-maven-plugin.iml

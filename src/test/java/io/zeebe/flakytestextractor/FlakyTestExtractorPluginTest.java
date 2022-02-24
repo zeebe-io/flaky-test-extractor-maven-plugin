@@ -71,6 +71,18 @@ public class FlakyTestExtractorPluginTest {
 		}).doesNotThrowAnyException();
 	}
 
+	@Test
+	public void testExecuteWithSkipped() {
+		FlakyTestExtractorPlugin sut = new FlakyTestExtractorPlugin();
+		sut.reportDir = tempFolder.getRoot();
+		sut.skip = true;
+
+		assertThatCode(sut::execute).doesNotThrowAnyException();
+
+		File[] createdFiles = tempFolder.getRoot().listFiles(file -> file.getName().endsWith("-FLAKY.xml"));
+		assertThat(createdFiles).isEmpty();
+	}
+
 	private void inspectFlakyErrorReport(File flakyErrorReport)
 			throws ParserConfigurationException, SAXException, IOException, FileNotFoundException {
 

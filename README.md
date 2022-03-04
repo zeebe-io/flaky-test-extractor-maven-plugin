@@ -1,3 +1,5 @@
+[![Maven Central](https://img.shields.io/maven-central/v/io.zeebe/flaky-test-extractor-maven-plugin.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.zeebe%22%20AND%20a:%22flaky-test-extractor-maven-plugin%22)
+
 # flaky-test-extractor-maven-plugin
 
 Maven plugin that scans the test output of Surefire for flaky tests and writes test output files for just the flaky

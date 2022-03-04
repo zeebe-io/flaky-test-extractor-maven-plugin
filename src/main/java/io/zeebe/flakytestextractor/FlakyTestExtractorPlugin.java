@@ -7,7 +7,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -17,63 +16,66 @@ import org.apache.maven.plugins.annotations.Parameter;
 @Mojo(name = "extract-flaky-tests", defaultPhase = LifecyclePhase.POST_INTEGRATION_TEST)
 public class FlakyTestExtractorPlugin extends AbstractMojo {
 
-	private static final ReportTransformer TRANSFORMER = new ReportTransformer();
+  private static final ReportTransformer TRANSFORMER = new ReportTransformer();
 
-	@Parameter(defaultValue = "${project.build.directory}/surefire-reports", property = "reportDir")
-	protected File reportDir;
+  @Parameter(defaultValue = "${project.build.directory}/surefire-reports", property = "reportDir")
+  protected File reportDir;
 
-	@Parameter(defaultValue = "true", property = "failBuild")
-	protected boolean failBuild = true;
+  @Parameter(defaultValue = "true", property = "failBuild")
+  protected boolean failBuild = true;
 
-	@Parameter(defaultValue = "false", property = "skipFlakyTestExtractor")
-	protected boolean skip = false;
+  @Parameter(defaultValue = "false", property = "skipFlakyTestExtractor")
+  protected boolean skip = false;
 
-	public void execute() throws MojoFailureException {
-		if(skip){
-			getLog().info("extract-flaky-tests Plugin skipped");
-			return;
-		}
+  public void execute() throws MojoFailureException {
+    if (skip) {
+      getLog().info("extract-flaky-tests Plugin skipped");
+      return;
+    }
 
-		getLog().info("FlakyTestExtractorPlugin - starting");
-		getLog().info("reportDir: " + reportDir.getAbsolutePath());
-		getLog().info("failBuild: " + failBuild);
-		
-		boolean foundFlakyTests = false;
+    getLog().info("FlakyTestExtractorPlugin - starting");
+    getLog().info("reportDir: " + reportDir.getAbsolutePath());
+    getLog().info("failBuild: " + failBuild);
 
-		XmlReporterWriter reportWriter = new XmlReporterWriter(reportDir);
+    boolean foundFlakyTests = false;
 
-		ExtendedSurefireReportParser reportsParser = new ExtendedSurefireReportParser(
-				Collections.singletonList(reportDir), Locale.getDefault(), getLog());
+    XmlReporterWriter reportWriter = new XmlReporterWriter(reportDir);
 
-		try {
-			Map<File, List<ExtendedReportTestSuite>> testReports = reportsParser.parseXMLReportFiles();
-			
-			getLog().debug("testReports.size: " + testReports.size());
-			
-			for (File reportFile : testReports.keySet()) {
-				List<ExtendedReportTestSuite> testSuites = testReports.get(reportFile);
+    ExtendedSurefireReportParser reportsParser =
+        new ExtendedSurefireReportParser(
+            Collections.singletonList(reportDir), Locale.getDefault(), getLog());
 
-				List<ExtendedReportTestSuite> testSuitesWithOnlyFlakyTests = testSuites.stream()
-						.map(TRANSFORMER::transform).filter(Optional::isPresent).map(Optional::get)
-						.collect(Collectors.toList());
+    try {
+      Map<File, List<ExtendedReportTestSuite>> testReports = reportsParser.parseXMLReportFiles();
 
-				getLog().debug("testSuitesWithOnlyFlakyTests.size: " + testSuitesWithOnlyFlakyTests.size());
-				
-				if (!testSuitesWithOnlyFlakyTests.isEmpty()) {
-					foundFlakyTests = true;
-					reportWriter.writeXMLReport(reportFile, testSuitesWithOnlyFlakyTests);
-				}
-			}
-		} catch (ParsingException e) {
-			getLog().error(e);
-		}
+      getLog().debug("testReports.size: " + testReports.size());
 
-		if (foundFlakyTests && failBuild) {
-			getLog().info("FlakyTestExtractorPlugin - finished and about to fail the build");
-			throw new MojoFailureException("Flaky tests encountered");
-		}
+      for (File reportFile : testReports.keySet()) {
+        List<ExtendedReportTestSuite> testSuites = testReports.get(reportFile);
 
-		getLog().info("FlakyTestExtractorPlugin - finished");
-	}
+        List<ExtendedReportTestSuite> testSuitesWithOnlyFlakyTests =
+            testSuites.stream()
+                .map(TRANSFORMER::transform)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
 
+        getLog().debug("testSuitesWithOnlyFlakyTests.size: " + testSuitesWithOnlyFlakyTests.size());
+
+        if (!testSuitesWithOnlyFlakyTests.isEmpty()) {
+          foundFlakyTests = true;
+          reportWriter.writeXMLReport(reportFile, testSuitesWithOnlyFlakyTests);
+        }
+      }
+    } catch (ParsingException e) {
+      getLog().error(e);
+    }
+
+    if (foundFlakyTests && failBuild) {
+      getLog().info("FlakyTestExtractorPlugin - finished and about to fail the build");
+      throw new MojoFailureException("Flaky tests encountered");
+    }
+
+    getLog().info("FlakyTestExtractorPlugin - finished");
+  }
 }

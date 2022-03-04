@@ -113,7 +113,6 @@ pipeline {
               sh 'git config --global user.email "ci@camunda.com"'
               sh 'git config --global user.name "${GITHUB_TOKEN_USR}"'
               sh 'mvn -B -s $MAVEN_SETTINGS_XML -DskipTests source:jar javadoc:jar release:prepare release:perform -Prelease'
-              sh '.ci/scripts/github-release.sh'
           }
         }
       }

@@ -32,8 +32,8 @@
     <assertj.version>3.22.0</assertj.version>
     <junit.version>4.13.2</junit.version>
 
-    <nexus.snapshot.repository>https://app.camunda.com/nexus/content/repositories/zeebe-io-snapshots/</nexus.snapshot.repository>
-    <nexus.release.repository>https://app.camunda.com/nexus/content/repositories/zeebe-io/</nexus.release.repository>
+    <nexus.snapshot.repository>https://artifacts.camunda.com/artifactory/zeebe-io-snapshots/</nexus.snapshot.repository>
+    <nexus.release.repository>https://artifacts.camunda.com/artifactory/zeebe-io/</nexus.release.repository>
 
     <plugin.version.jacoco>0.8.7</plugin.version.jacoco>
     <plugin.version.spotless>2.20.1</plugin.version.spotless>

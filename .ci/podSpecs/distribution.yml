@@ -10,11 +10,11 @@ spec:
       effect: "NoSchedule"
   volumes:
     - name: shared-data
-      emptyDir: {}
+      emptyDir: { }
   containers:
     - name: maven
-      image: maven:3.6.0-jdk-11
-      command: ["cat"]
+      image: maven:3.6.2-jdk-11
+      command: [ "cat" ]
       tty: true
       env:
         - name: LIMITS_CPU

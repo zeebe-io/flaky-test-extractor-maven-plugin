@@ -36,9 +36,10 @@ This plugin scans the XML file for flaky tests results and then generates additi
 
 ## How can I configure this plugin?
 
-There are two configuration options:
+There are three configuration options:
 * `reportDir` (defaultValue `${project.build.directory}/surefire-reports`) - this is the directory that will be scanned for XML report file. It is also the directory to which new XML files will be written
 * `failBuild` (defaultValue `true`) - flag to make the plugin fail the build if flaky test were discovered	
+* `skipFlakyTestExtractor` (defaultValue `false`) - flag to skip this plugin
 
 ## What are known shortcomings?
 

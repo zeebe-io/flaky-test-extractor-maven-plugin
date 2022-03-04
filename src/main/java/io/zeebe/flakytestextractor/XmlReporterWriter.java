@@ -86,7 +86,7 @@ public class XmlReporterWriter {
         ppw.addAttribute("xsi:noNamespaceSchemaLocation", xsdSchemaLocation);
         ppw.addAttribute("version", xsdVersion);
 
-        final String reportName = testSuite.getName();
+        final String reportName = testSuite.getFullClassName();
         ppw.addAttribute("name", reportName == null ? "" : extraEscapeAttribute(reportName));
         ppw.addAttribute("time", String.valueOf(testSuite.getTimeElapsed()));
         ppw.addAttribute("tests", String.valueOf(testSuite.getNumberOfTests()));
@@ -100,7 +100,7 @@ public class XmlReporterWriter {
         final String name = testCase.getName();
         ppw.addAttribute("name", name == null ? "" : extraEscapeAttribute(name));
 
-        final String className = testCase.getClassName();
+        final String className = testCase.getFullClassName();
         if (className != null) {
             ppw.addAttribute("classname", extraEscapeAttribute(className));
         }

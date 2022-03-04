@@ -22,10 +22,18 @@ public class FlakyTestExtractorPlugin extends AbstractMojo {
 	@Parameter(defaultValue = "${project.build.directory}/surefire-reports", property = "reportDir")
 	protected File reportDir;
 
-	@Parameter(defaultValue = "true", property = "failBuild", required = false)
+	@Parameter(defaultValue = "true", property = "failBuild")
 	protected boolean failBuild = true;
 
+	@Parameter(defaultValue = "false", property = "skipFlakyTestExtractor")
+	protected boolean skip = false;
+
 	public void execute() throws MojoFailureException {
+		if(skip){
+			getLog().info("extract-flaky-tests Plugin skipped");
+			return;
+		}
+
 		getLog().info("FlakyTestExtractorPlugin - starting");
 		getLog().info("reportDir: " + reportDir.getAbsolutePath());
 		getLog().info("failBuild: " + failBuild);

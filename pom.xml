@@ -11,10 +11,6 @@
 
     <name>flaky-test-extractor Maven Plugin</name>
 
-    <prerequisites>
-        <maven>${maven.version}</maven>
-    </prerequisites>
-
     <parent>
         <groupId>org.camunda</groupId>
         <artifactId>camunda-release-parent</artifactId>
@@ -180,6 +176,9 @@
                 <configuration>
                     <rules>
                         <dependencyConvergence />
+                        <requireMavenVersion>
+                            <version>${maven.version}</version>
+                        </requireMavenVersion>
                     </rules>
                 </configuration>
                 <executions>

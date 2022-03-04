@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.zeebe</groupId>
@@ -16,7 +17,7 @@
         <artifactId>camunda-release-parent</artifactId>
         <version>3.9.1</version>
         <!-- do not remove empty tag - http://jira.codehaus.org/browse/MNG-4687 -->
-        <relativePath />
+        <relativePath/>
     </parent>
 
     <properties>
@@ -30,6 +31,7 @@
         </nexus.release.repository>
 
         <plugin.version.jacoco>0.8.7</plugin.version.jacoco>
+        <plugin.version.spotless>2.20.1</plugin.version.spotless>
     </properties>
 
     <dependencies>
@@ -175,7 +177,7 @@
                 <version>3.0.0</version>
                 <configuration>
                     <rules>
-                        <dependencyConvergence />
+                        <dependencyConvergence/>
                         <requireMavenVersion>
                             <version>${maven.version}</version>
                         </requireMavenVersion>
@@ -217,6 +219,46 @@
                         </goals>
                     </execution>
                     <!-- Threshold -->
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${plugin.version.spotless}</version>
+                <configuration>
+                    <java>
+                        <googleJavaFormat>
+                            <version>1.13.0</version>
+                            <style>GOOGLE</style>
+                        </googleJavaFormat>
+                    </java>
+                    <markdown>
+                        <includes>
+                            <include>**/*.md</include>
+                        </includes>
+                        <excludes>
+                            <exclude>**/target/**/*.md</exclude>
+                        </excludes>
+                        <flexmark></flexmark>
+                    </markdown>
+                    <pom>
+                        <!-- These are the defaults, you can override if you want -->
+                        <includes>
+                            <include>pom.xml</include>
+                        </includes>
+
+                        <sortPom></sortPom>
+                        <!-- has its own section below -->
+                    </pom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>spotless-format</id>
+                        <goals>
+                            <goal>apply</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

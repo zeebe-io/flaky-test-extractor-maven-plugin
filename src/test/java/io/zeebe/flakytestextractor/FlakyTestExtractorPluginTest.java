@@ -12,9 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,116 +21,123 @@ import org.xml.sax.SAXException;
 
 public class FlakyTestExtractorPluginTest {
 
-	private final ExtendedTestSuiteXMLParser PARSER = new ExtendedTestSuiteXMLParser(new TestLogger());
+  private final ExtendedTestSuiteXMLParser PARSER =
+      new ExtendedTestSuiteXMLParser(new TestLogger());
 
-	private static String[] RESSOURCES = new String[] {
-			"surefire-reports/TEST-com.github.pihme.jenkinstestbed.module1.ErrorTest.xml",
-			"surefire-reports/TEST-com.github.pihme.jenkinstestbed.module1.FailingTest.xml",
-			"surefire-reports/TEST-com.github.pihme.jenkinstestbed.module1.FlakyErrorTest.xml",
-			"surefire-reports/TEST-com.github.pihme.jenkinstestbed.module1.FlakyTest.xml",
-			"surefire-reports/TEST-com.github.pihme.jenkinstestbed.module1.PassingTest.xml", };
+  private static String[] RESSOURCES =
+      new String[] {
+        "surefire-reports/TEST-com.github.pihme.jenkinstestbed.module1.ErrorTest.xml",
+        "surefire-reports/TEST-com.github.pihme.jenkinstestbed.module1.FailingTest.xml",
+        "surefire-reports/TEST-com.github.pihme.jenkinstestbed.module1.FlakyErrorTest.xml",
+        "surefire-reports/TEST-com.github.pihme.jenkinstestbed.module1.FlakyTest.xml",
+        "surefire-reports/TEST-com.github.pihme.jenkinstestbed.module1.PassingTest.xml",
+      };
 
-	@Rule
-	public TemporaryFolder tempFolder = new TemporaryFolder();
+  @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
-	@Before
-	public void setUpFiles() throws IOException {
-		TestUtil.copyClassPatHResourcesToFolder(RESSOURCES, tempFolder.getRoot());
-	}
+  @Before
+  public void setUpFiles() throws IOException {
+    TestUtil.copyClassPatHResourcesToFolder(RESSOURCES, tempFolder.getRoot());
+  }
 
-	@Test
-	public void testExecute() throws Exception {
-		FlakyTestExtractorPlugin sut = new FlakyTestExtractorPlugin();
+  @Test
+  public void testExecute() throws Exception {
+    FlakyTestExtractorPlugin sut = new FlakyTestExtractorPlugin();
 
-		sut.reportDir = tempFolder.getRoot();
+    sut.reportDir = tempFolder.getRoot();
 
-		assertThatThrownBy(() -> sut.execute()).hasMessage("Flaky tests encountered");
+    assertThatThrownBy(() -> sut.execute()).hasMessage("Flaky tests encountered");
 
-		File[] createdFiles = tempFolder.getRoot().listFiles(file -> file.getName().endsWith("-FLAKY.xml"));
+    File[] createdFiles =
+        tempFolder.getRoot().listFiles(file -> file.getName().endsWith("-FLAKY.xml"));
 
-		assertThat(createdFiles).hasSize(2);
+    assertThat(createdFiles).hasSize(2);
 
-		List<File> generatedReports = Arrays.asList(createdFiles);
-		sort(generatedReports);
+    List<File> generatedReports = Arrays.asList(createdFiles);
+    sort(generatedReports);
 
-		inspectFlakyErrorReport(generatedReports.get(0));
-		inspectFlakyReport(generatedReports.get(1));
-	}
+    inspectFlakyErrorReport(generatedReports.get(0));
+    inspectFlakyReport(generatedReports.get(1));
+  }
 
-	@Test
-	public void testExecuteWithFailBuildFalse() throws Exception {
-		FlakyTestExtractorPlugin sut = new FlakyTestExtractorPlugin();
+  @Test
+  public void testExecuteWithFailBuildFalse() throws Exception {
+    FlakyTestExtractorPlugin sut = new FlakyTestExtractorPlugin();
 
-		sut.reportDir = tempFolder.getRoot();
-		sut.failBuild = false;
+    sut.reportDir = tempFolder.getRoot();
+    sut.failBuild = false;
 
-		assertThatCode(() -> {
-			sut.execute();
-		}).doesNotThrowAnyException();
-	}
+    assertThatCode(
+            () -> {
+              sut.execute();
+            })
+        .doesNotThrowAnyException();
+  }
 
-	@Test
-	public void testExecuteWithSkipped() {
-		FlakyTestExtractorPlugin sut = new FlakyTestExtractorPlugin();
-		sut.reportDir = tempFolder.getRoot();
-		sut.skip = true;
+  @Test
+  public void testExecuteWithSkipped() {
+    FlakyTestExtractorPlugin sut = new FlakyTestExtractorPlugin();
+    sut.reportDir = tempFolder.getRoot();
+    sut.skip = true;
 
-		assertThatCode(sut::execute).doesNotThrowAnyException();
+    assertThatCode(sut::execute).doesNotThrowAnyException();
 
-		File[] createdFiles = tempFolder.getRoot().listFiles(file -> file.getName().endsWith("-FLAKY.xml"));
-		assertThat(createdFiles).isEmpty();
-	}
+    File[] createdFiles =
+        tempFolder.getRoot().listFiles(file -> file.getName().endsWith("-FLAKY.xml"));
+    assertThat(createdFiles).isEmpty();
+  }
 
-	private void inspectFlakyErrorReport(File flakyErrorReport)
-			throws ParserConfigurationException, SAXException, IOException, FileNotFoundException {
+  private void inspectFlakyErrorReport(File flakyErrorReport)
+      throws ParserConfigurationException, SAXException, IOException, FileNotFoundException {
 
-		assertThat(flakyErrorReport).hasName("TEST-com.github.pihme.jenkinstestbed.module1.FlakyErrorTest-FLAKY.xml");
+    assertThat(flakyErrorReport)
+        .hasName("TEST-com.github.pihme.jenkinstestbed.module1.FlakyErrorTest-FLAKY.xml");
 
-		try (InputStreamReader reader = getReaderForFile(flakyErrorReport)) {
-			List<ExtendedReportTestSuite> testSuites = PARSER.parse(reader);
+    try (InputStreamReader reader = getReaderForFile(flakyErrorReport)) {
+      List<ExtendedReportTestSuite> testSuites = PARSER.parse(reader);
 
-			assertThat(testSuites).hasSize(1);
+      assertThat(testSuites).hasSize(1);
 
-			ExtendedReportTestSuite testSuite = testSuites.get(0);
-			assertThat(testSuite.getNumberOfTests()).isEqualTo(1);
-			assertThat(testSuite.getNumberOfFailures()).isEqualTo(1);
-			assertThat(testSuite.getNumberOfErrors()).isEqualTo(0);
-			assertThat(testSuite.getNumberOfFlakes()).isEqualTo(0);
-			assertThat(testSuite.getName()).isEqualTo("FlakyErrorTest");
+      ExtendedReportTestSuite testSuite = testSuites.get(0);
+      assertThat(testSuite.getNumberOfTests()).isEqualTo(1);
+      assertThat(testSuite.getNumberOfFailures()).isEqualTo(1);
+      assertThat(testSuite.getNumberOfErrors()).isEqualTo(0);
+      assertThat(testSuite.getNumberOfFlakes()).isEqualTo(0);
+      assertThat(testSuite.getName()).isEqualTo("FlakyErrorTest");
 
-			ExtendedReportTestCase testCase = testSuite.getTestCases().get(0);
-			assertThat(testCase.isFlake()).isFalse();
-			assertThat(testCase.getName()).isEqualTo("failNever (Flaky Test)");
-			assertThat(testCase.getSystemOut()).isEqualTo("Flaky error\n");
-		}
-	}
+      ExtendedReportTestCase testCase = testSuite.getTestCases().get(0);
+      assertThat(testCase.isFlake()).isFalse();
+      assertThat(testCase.getName()).isEqualTo("failNever (Flaky Test)");
+      assertThat(testCase.getSystemOut()).isEqualTo("Flaky error\n");
+    }
+  }
 
-	private void inspectFlakyReport(File flakyReport)
-			throws ParserConfigurationException, SAXException, IOException, FileNotFoundException {
+  private void inspectFlakyReport(File flakyReport)
+      throws ParserConfigurationException, SAXException, IOException, FileNotFoundException {
 
-		assertThat(flakyReport).hasName("TEST-com.github.pihme.jenkinstestbed.module1.FlakyTest-FLAKY.xml");
+    assertThat(flakyReport)
+        .hasName("TEST-com.github.pihme.jenkinstestbed.module1.FlakyTest-FLAKY.xml");
 
-		try (InputStreamReader reader = getReaderForFile(flakyReport)) {
-			List<ExtendedReportTestSuite> testSuites = PARSER.parse(reader);
+    try (InputStreamReader reader = getReaderForFile(flakyReport)) {
+      List<ExtendedReportTestSuite> testSuites = PARSER.parse(reader);
 
-			assertThat(testSuites).hasSize(1);
+      assertThat(testSuites).hasSize(1);
 
-			ExtendedReportTestSuite testSuite = testSuites.get(0);
-			assertThat(testSuite.getNumberOfTests()).isEqualTo(1);
-			assertThat(testSuite.getNumberOfFailures()).isEqualTo(1);
-			assertThat(testSuite.getNumberOfErrors()).isEqualTo(0);
-			assertThat(testSuite.getNumberOfFlakes()).isEqualTo(0);
-			assertThat(testSuite.getName()).isEqualTo("FlakyTest");
+      ExtendedReportTestSuite testSuite = testSuites.get(0);
+      assertThat(testSuite.getNumberOfTests()).isEqualTo(1);
+      assertThat(testSuite.getNumberOfFailures()).isEqualTo(1);
+      assertThat(testSuite.getNumberOfErrors()).isEqualTo(0);
+      assertThat(testSuite.getNumberOfFlakes()).isEqualTo(0);
+      assertThat(testSuite.getName()).isEqualTo("FlakyTest");
 
-			ExtendedReportTestCase testCase = testSuite.getTestCases().get(0);
-			assertThat(testCase.isFlake()).isFalse();
-			assertThat(testCase.getName()).isEqualTo("flakyTest (Flaky Test)");
-			assertThat(testCase.getSystemOut()).isEqualTo("Flaky test\n");
-		}
-	}
+      ExtendedReportTestCase testCase = testSuite.getTestCases().get(0);
+      assertThat(testCase.isFlake()).isFalse();
+      assertThat(testCase.getName()).isEqualTo("flakyTest (Flaky Test)");
+      assertThat(testCase.getSystemOut()).isEqualTo("Flaky test\n");
+    }
+  }
 
-	private InputStreamReader getReaderForFile(File file) throws FileNotFoundException {
-		return new InputStreamReader(new FileInputStream(file));
-	}
-
+  private InputStreamReader getReaderForFile(File file) throws FileNotFoundException {
+    return new InputStreamReader(new FileInputStream(file));
+  }
 }

@@ -36,7 +36,7 @@
     <nexus.release.repository>https://artifacts.camunda.com/artifactory/zeebe-io/</nexus.release.repository>
 
     <plugin.version.jacoco>0.8.7</plugin.version.jacoco>
-    <plugin.version.spotless>2.21.0</plugin.version.spotless>
+    <plugin.version.spotless>2.22.0</plugin.version.spotless>
     <plugin.version.enforcer>3.0.0</plugin.version.enforcer>
   </properties>
 

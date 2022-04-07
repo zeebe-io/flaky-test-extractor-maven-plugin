@@ -35,8 +35,9 @@
     <nexus.snapshot.repository>https://artifacts.camunda.com/artifactory/zeebe-io-snapshots/</nexus.snapshot.repository>
     <nexus.release.repository>https://artifacts.camunda.com/artifactory/zeebe-io/</nexus.release.repository>
 
-    <plugin.version.jacoco>0.8.7</plugin.version.jacoco>
+
     <plugin.version.spotless>2.22.1</plugin.version.spotless>
+    <plugin.version.jacoco>0.8.8</plugin.version.jacoco>
     <plugin.version.enforcer>3.0.0</plugin.version.enforcer>
   </properties>
 

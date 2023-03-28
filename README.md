@@ -62,3 +62,6 @@ There are three configuration options:
 * The elapsed time is simply copied from the original file. It is not adjusted to reflect only the time consumed by the
   flaky tests
 
+## How to release this project?
+
+Manually trigger a [release workflow run](https://github.com/zeebe-io/flaky-test-extractor-maven-plugin/actions/workflows/release.yml) with the desired parameters for current and next version.

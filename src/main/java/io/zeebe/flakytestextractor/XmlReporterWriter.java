@@ -55,7 +55,8 @@ public class XmlReporterWriter {
       final OutputStream outputStream,
       final OutputStreamWriter fw,
       final XMLWriter ppw,
-      final List<ExtendedReportTestCase> testCases) {
+      final List<ExtendedReportTestCase> testCases)
+      throws IOException {
     for (final ExtendedReportTestCase testCase : testCases) {
       startTestElement(ppw, testCase);
       if (!testCase.isSuccessful()) {
@@ -86,8 +87,8 @@ public class XmlReporterWriter {
     return new OutputStreamWriter(fos, UTF_8);
   }
 
-  private void createTestSuiteElement(
-      final XMLWriter ppw, final ExtendedReportTestSuite testSuite) {
+  private void createTestSuiteElement(final XMLWriter ppw, final ExtendedReportTestSuite testSuite)
+      throws IOException {
     ppw.startElement("testsuite");
 
     ppw.addAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -103,7 +104,8 @@ public class XmlReporterWriter {
     ppw.addAttribute("failures", String.valueOf(testSuite.getNumberOfFailures()));
   }
 
-  private void startTestElement(final XMLWriter ppw, final ExtendedReportTestCase testCase) {
+  private void startTestElement(final XMLWriter ppw, final ExtendedReportTestCase testCase)
+      throws IOException {
     ppw.startElement("testcase");
     final String name = testCase.getName();
     ppw.addAttribute("name", name == null ? "" : extraEscapeAttribute(name));
@@ -120,7 +122,8 @@ public class XmlReporterWriter {
       final OutputStreamWriter outputStreamWriter,
       final XMLWriter ppw,
       final ExtendedReportTestCase testCase,
-      final OutputStream fw) {
+      final OutputStream fw)
+      throws IOException {
     ppw.startElement("failure"); // failure
 
     addAttributeIfNotEmpty(ppw, "message", testCase.getFailureMessage());
@@ -135,7 +138,8 @@ public class XmlReporterWriter {
   }
 
   private static void addAttributeIfNotEmpty(
-      final XMLWriter ppw, final String attributeName, final String valueToWrite) {
+      final XMLWriter ppw, final String attributeName, final String valueToWrite)
+      throws IOException {
     if (valueToWrite != null && !valueToWrite.isEmpty()) {
       ppw.addAttribute(attributeName, extraEscapeAttribute(valueToWrite));
     }
@@ -146,7 +150,8 @@ public class XmlReporterWriter {
       final OutputStreamWriter outputStreamWriter,
       final XMLWriter ppw,
       final ExtendedReportTestCase testCase,
-      final OutputStream fw) {
+      final OutputStream fw)
+      throws IOException {
     final EncodingOutputStream eos = new EncodingOutputStream(fw);
 
     addOutputStreamElement(outputStreamWriter, eos, ppw, testCase.getSystemOut(), "system-out");
@@ -158,7 +163,8 @@ public class XmlReporterWriter {
       final EncodingOutputStream eos,
       final XMLWriter xmlWriter,
       final String content,
-      final String name) {
+      final String name)
+      throws IOException {
     if (content != null && !content.isEmpty()) {
       xmlWriter.startElement(name);
 
@@ -196,7 +202,8 @@ public class XmlReporterWriter {
       final String message,
       final OutputStreamWriter outputStreamWriter,
       final XMLWriter xmlWriter,
-      final OutputStream fw) {
+      final OutputStream fw)
+      throws IOException {
     // Someday convert to xml 1.1 which handles everything but 0 inside string
     if (containsEscapesIllegalXml10(message)) {
       xmlWriter.writeText(escapeXml(message, false));

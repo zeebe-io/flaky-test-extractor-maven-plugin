@@ -18,8 +18,8 @@
   <name>flaky-test-extractor Maven Plugin</name>
 
   <scm>
-    <connection>scm:git:https://${GITHUB_TOKEN_USR}:${GITHUB_TOKEN_PSW}@github.com/zeebe-io/flaky-test-extractor-maven-plugin.git</connection>
-    <developerConnection>scm:git:https://${GITHUB_TOKEN_USR}:${GITHUB_TOKEN_PSW}@github.com/zeebe-io/flaky-test-extractor-maven-plugin.git</developerConnection>
+    <connection>scm:git:https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/zeebe-io/flaky-test-extractor-maven-plugin.git</connection>
+    <developerConnection>scm:git:https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/zeebe-io/flaky-test-extractor-maven-plugin.git</developerConnection>
     <tag>HEAD</tag>
     <url>https://github.com/zeebe-io/flaky-test-extractor-maven-plugin</url>
   </scm>

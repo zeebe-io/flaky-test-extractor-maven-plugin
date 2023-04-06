@@ -90,3 +90,5 @@ jobs:
           MAVEN_USERNAME: ${{ steps.secrets.outputs.ARTIFACTS_USR }}
           MAVEN_PASSWORD: ${{ steps.secrets.outputs.ARTIFACTS_PSW }}
           GPG_PASS: ${{ steps.secrets.outputs.MAVEN_CENTRAL_GPG_SIGNING_KEY_PASSPHRASE }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ github.token }}

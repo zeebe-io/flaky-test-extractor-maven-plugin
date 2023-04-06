@@ -78,9 +78,14 @@ jobs:
           githubServer: false
           servers: |
             [{
-              "id": "camunda-nexus",
-              "username": "${{ steps.secrets.outputs.ARTIFACTS_USR }}",
-              "password": "${{ steps.secrets.outputs.ARTIFACTS_PSW }}"
+                "id": "camunda-nexus",
+                "username": "${{ steps.secrets.outputs.ARTIFACTS_USR }}",
+                "password": "${{ steps.secrets.outputs.ARTIFACTS_PSW }}"
+            },
+            {
+                "id": "central",
+                "username": "${{ steps.secrets.outputs.MAVEN_CENTRAL_DEPLOYMENT_USR }}",
+                "password": "${{ steps.secrets.outputs.MAVEN_CENTRAL_DEPLOYMENT_PSW }}"
             }]
           mirrors: '[{"url": "https://repository.nexus.camunda.cloud/content/groups/internal/", "id": "camunda-nexus", "mirrorOf": "zeebe,zeebe-snapshots", "name": "camunda Nexus"}]'
 

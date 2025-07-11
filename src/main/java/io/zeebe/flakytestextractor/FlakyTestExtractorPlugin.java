@@ -13,10 +13,8 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-@Mojo(name = "extract-flaky-tests", defaultPhase = LifecyclePhase.POST_INTEGRATION_TEST)
+@Mojo(name = "extract-flaky-tests", defaultPhase = LifecyclePhase.POST_INTEGRATION_TEST, threadSafe = true)
 public class FlakyTestExtractorPlugin extends AbstractMojo {
-
-  private static final ReportTransformer TRANSFORMER = new ReportTransformer();
 
   @Parameter(defaultValue = "${project.build.directory}/surefire-reports", property = "reportDir")
   protected File reportDir;
@@ -55,7 +53,7 @@ public class FlakyTestExtractorPlugin extends AbstractMojo {
 
         List<ExtendedReportTestSuite> testSuitesWithOnlyFlakyTests =
             testSuites.stream()
-                .map(TRANSFORMER::transform)
+                .map(ReportTransformer::transform)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());

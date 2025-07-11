@@ -3,8 +3,9 @@ package io.zeebe.flakytestextractor;
 import java.util.Optional;
 
 public class ReportTransformer {
+  private ReportTransformer() {}
 
-  public Optional<ExtendedReportTestSuite> transform(ExtendedReportTestSuite testSuite) {
+  public static Optional<ExtendedReportTestSuite> transform(ExtendedReportTestSuite testSuite) {
     if (testSuite.getNumberOfFlakes() == 0) {
       return Optional.empty();
     }
@@ -44,7 +45,7 @@ public class ReportTransformer {
     return Optional.of(result);
   }
 
-  private String transformName(String name) {
+  private static String transformName(String name) {
     return name + " (Flaky Test)";
   }
 }
